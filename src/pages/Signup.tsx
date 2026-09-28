@@ -1,6 +1,10 @@
 import { useState } from "react";
 import AuthShell from "../components/AuthShell";
 import TermsOfServiceChangelogModal from "../components/TermsOfServiceChangelogModal";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import AuthShell from "../components/AuthShell";
+import TermsOfServiceChangelogModal from "../components/TermsOfServiceChangelogModal";
+import SubmitButton, { SUBMIT_DEMO_MS } from "../components/SubmitButton";
 
 const highlights = [
   "Clear field grouping keeps legal, team, and security details easy to scan",
@@ -40,6 +44,28 @@ export default function Signup() {
   const [acknowledgedVersion, setAcknowledgedVersion] = useState<string | null>(null);
 
   const hasAcknowledgedCurrentTerms = acknowledgedVersion === CURRENT_TOS_VERSION;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitTimerRef = useRef<number | null>(null);
+
+  const hasAcknowledgedCurrentTerms = acknowledgedVersion === CURRENT_TOS_VERSION;
+
+  useEffect(() => {
+    return () => {
+      if (submitTimerRef.current !== null) {
+        window.clearTimeout(submitTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!hasAcknowledgedCurrentTerms || isSubmitting) return;
+    setIsSubmitting(true);
+    submitTimerRef.current = window.setTimeout(() => {
+      submitTimerRef.current = null;
+      setIsSubmitting(false);
+    }, SUBMIT_DEMO_MS);
+  };
 
   return (
     <AuthShell
@@ -69,6 +95,7 @@ export default function Signup() {
         onClose={() => setTosModalOpen(false)}
       />
       <form className="auth-form">
+      <form className="auth-form" onSubmit={handleSubmit} noValidate>
         <div className="auth-grid">
           <div className="auth-input-group">
             <label className="auth-label" htmlFor="signup-name">
@@ -157,6 +184,12 @@ export default function Signup() {
           <button type="submit" className="auth-button auth-button-primary" disabled={!hasAcknowledgedCurrentTerms}>
             Create account
           </button>
+          <SubmitButton
+            idleLabel="Create account"
+            busyLabel="Creating account…"
+            busy={isSubmitting}
+            disabled={!hasAcknowledgedCurrentTerms}
+          />
           <button type="button" className="auth-button auth-button-secondary">
             Book onboarding call
           </button>

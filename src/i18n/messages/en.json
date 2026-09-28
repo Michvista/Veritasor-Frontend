@@ -32,6 +32,11 @@
   "locale.picker.option.checkmark": "✓",
   "locale.picker.mobile.title": "Choose a language",
   "locale.picker.mobile.description": "Select the language you want to use across the app.",
+  "accountMenu.language.ariaLabel": "Language: {language}. Activate to change the interface language.",
+  "accountMenu.language.label": "Language",
+  "accountMenu.language.description": "Pick a language. Dates, numbers, and currencies follow that locale. Missing translations fall back to English.",
+  "accountMenu.copyGuidance.title": "Translator copy guidance",
+  "accountMenu.copyGuidance.body": "Use ICU MessageFormat for all UI strings. Never concatenate translated fragments or interpolate inside a word. Respect plural, gender, and select rules per locale. Keep labels short and let the layout wrap; do not hard-code layout width. Numbers, dates, and currencies are formatted by the active locale automatically."
   "milestone.status.pending": "Pending",
   "milestone.status.released": "Released",
   "milestone.count": "{count, plural, =0 {No milestones} one {# milestone} other {# milestones}}",
@@ -175,5 +180,18 @@
   "auditLog.filters.copied": "Copied to clipboard",
   "auditLog.filters.capReached": "This workspace is at its limit of {max} saved filters. Delete one to make room.",
   "auditLog.filters.results.singular": "Showing {count} of {total} entries",
-  "auditLog.filters.results.plural": "Showing {count} of {total} entries"
+  "auditLog.filters.results.plural": "Showing {count} of {total} entries",
+  "attestations.chart.title": "Attestation history",
+  "attestations.chart.description": "Attestation activity over time.",
+  "attestations.chart.loading": "Loading attestation history…",
+  "attestations.chart.error": "Unable to load attestation history.",
+  "attestations.chart.empty": "No attestation activity in this period.",
+  "attestations.chart.success": "Successful",
+  "attestations.chart.failure": "Failed",
+  "attestations.chart.viewAsTable": "View as table",
+  "attestations.chart.viewAsChart": "View as chart",
+  "attestations.chart.tableCaption": "Attestation history data",
+  "attestations.chart.timeAxisLabel": "Time",
+  "attestations.chart.countAxisLabel": "Count",
+  "attestations.chart.dataPoint": "{date}: {total} attestations ({successful} successful, {failed} failed)"
 }

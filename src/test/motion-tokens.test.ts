@@ -213,7 +213,7 @@ describe('Motion CSS — prefers-reduced-motion override', () => {
     const reducedSection = rawCss.slice(rawCss.indexOf('@media (prefers-reduced-motion: reduce)'))
     // Extract the @keyframes toast-enter block inside — use a non-greedy match
     // so we get the first occurrence (the one inside the media query)
-    const kfMatch = reducedSection.match(/@keyframes toast-enter\s*\{([^}]+\}[^}]*)\}/)
+    const kfMatch = reducedSection.match(/^\s+@keyframes toast-enter\s*\{((?:[^}]*}\s*[^}]*)+)\}/m)
     expect(kfMatch, 'No toast-enter keyframe in reduced-motion block').not.toBeNull()
     // The keyframe body contains all the stop rules (0% { ... } 100% { ... })
     // We validate the entire match text
@@ -230,6 +230,35 @@ describe('Motion CSS — prefers-reduced-motion override', () => {
   it('skeleton animation falls back to pulse under reduced motion', () => {
     const reducedBlock = rawCss.slice(rawCss.indexOf('@media (prefers-reduced-motion: reduce)'))
     expect(reducedBlock).toContain('pulse')
+  })
+})
+
+describe('Auth submit CSS — motion token adoption', () => {
+  it('.auth-button transition references --motion-duration-xs', () => {
+    const ruleMatch = rawCss.match(/\.auth-button\s*\{([^}]*)\}/)
+    expect(ruleMatch, '.auth-button rule not found').not.toBeNull()
+    expect(ruleMatch![1]).toContain('--motion-duration-xs')
+  })
+
+  it('.auth-button transition references --motion-easing-standard', () => {
+    const ruleMatch = rawCss.match(/\.auth-button\s*\{([^}]*)\}/)
+    expect(ruleMatch, '.auth-button rule not found').not.toBeNull()
+    expect(ruleMatch![1]).toContain('--motion-easing-standard')
+  })
+
+  it('.auth-button does not use a hardcoded 160ms duration', () => {
+    const ruleMatch = rawCss.match(/\.auth-button\s*\{([^}]*)\}/)
+    expect(ruleMatch, '.auth-button rule not found').not.toBeNull()
+    expect(ruleMatch![1]).not.toContain('160ms')
+  })
+
+  it('reduced-motion auth submit rules kill transform and spinner animation', () => {
+    expect(rawCss).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.auth-submit[\s\S]*?transform:\s*none/,
+    )
+    expect(rawCss).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.auth-submit-spinner[\s\S]*?animation:\s*none/,
+    )
   })
 })
 

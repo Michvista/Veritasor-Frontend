@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LocaleProvider } from './i18n/provider'
 import { ToastProvider } from './components/ToastContext'
 import Layout from './components/Layout'
+import LocaleAccountMenu from './components/LocalePicker/LocaleAccountMenu'
 import ApiKeys from './pages/ApiKeys'
 import HelpArticle from './pages/HelpArticle'
 import RevenueSources from './pages/RevenueSources'
@@ -11,6 +12,7 @@ import {
   ConnectSourceWizard,
   SelectSourceProviderStep,
   AuthorizeSourceStep,
+  OAuthCallbackLandingStep,
   ConfigureSourceScopeStep,
   MapCurrenciesStep,
   ConfirmSourceStep,
@@ -22,6 +24,7 @@ const Attestations = () => <div className="p-6 text-zinc-900 dark:text-white fon
 export default function App() {
   return (
     <LocaleProvider>
+      <LocaleAccountMenu className="fixed right-4 top-4 z-50" />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -36,6 +39,7 @@ export default function App() {
             <Route path="connect-source" element={<ConnectSourceWizard />}>
               <Route path="provider" element={<SelectSourceProviderStep />} />
               <Route path="authorize" element={<AuthorizeSourceStep />} />
+              <Route path="callback" element={<OAuthCallbackLandingStep />} />
               <Route path="scope" element={<ConfigureSourceScopeStep />} />
               <Route path="mapping" element={<MapCurrenciesStep />} />
               <Route path="confirm" element={<ConfirmSourceStep />} />
